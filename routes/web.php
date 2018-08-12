@@ -11,6 +11,36 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+/**
+ * Authentication Routes
+ */
+Auth::routes();
+
+
+/**
+ * PUBLIC ROUTES
+ */
+
+Route::group(['middleware' => ['web']], function(){
+    # /
+    Route::get('/','PublicController@index')->name('public.index');
+    
+    # /test
+    Route::get('/test', function(){
+        return "Test route";
+    });
 });
+
+
+/**
+ * ROUTES REQUIRING AUTHENTICATION
+ */
+
+ Route::group(['middleware' => ['auth']], function(){
+
+ });
+
+
+
+
