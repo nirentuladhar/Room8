@@ -26,10 +26,6 @@ Route::group(['middleware' => ['web']], function(){
     # /
     Route::get('/','PublicController@index')->name('public.index');
     
-    # /test
-    Route::get('/test', function(){
-        return "Test route";
-    });
 });
 
 
