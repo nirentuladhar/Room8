@@ -1,8 +1,10 @@
 import React from "react";
-
 import axios from "axios";
+import { connect } from "react-redux";
 
-export default class UserList extends React.Component {
+import { fetchUserList } from "../actions/userActions";
+
+class UserList extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -13,45 +15,36 @@ export default class UserList extends React.Component {
 
     componentDidMount() {
         //login a valid user from db first
-        let url = "http://room8.test:8000/api/";
+        let url = "http://localhost:8000/api/";
+        const credentials = {
+            email: "yhirthe@example.net",
+            password: "secret"
+        };
         var self = this;
         //send login post request to get access token
-        axios
-            .post(url + "auth/login", {
-                email: "karine78@example.org",
-                password: "secret"
-            })
-            .then(response => {
-                self.setState({
-                    access_token:
-                        response.data.token_type +
-                        " " +
-                        response.data.access_token
-                });
-            })
-            .finally(() => {
-                axios
-                .get(url+"test/users",{
-                    headers: {
-                        Authorization: self.state.access_token
-                    }
-                })
-                .then(response => {
-                    console.log(response);
-                    self.setState({ users: response.data });
-                });
-            });
-
-        
+        this.props.fetchUserList(url, credentials);
     }
 
     render() {
         return (
-            <ul>
-                {this.state.users.map(user => (
-                    <li key={user.id}>{user.name}</li>
-                ))}
-            </ul>
+            <div className="mt-5">
+                <h2> Users </h2>
+                <ul>
+                    {this.props.userList.map(user => (
+                        <li key={user.id}>{user.name}</li>
+                    ))}
+                </ul>
+            </div>
         );
     }
 }
+
+const mapStateToProps = state => ({
+    accessToken: state.dummyReducer.userAccessToken,
+    userList: state.dummyReducer.userList
+});
+
+export default connect(
+    mapStateToProps,
+    { fetchUserList }
+)(UserList);
