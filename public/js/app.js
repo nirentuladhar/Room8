@@ -14138,11 +14138,7 @@ window.Popper = __webpack_require__(5).default;
 try {
   window.$ = window.jQuery = __webpack_require__(6);
 
-<<<<<<< HEAD
-    __webpack_require__(23);
-=======
-  __webpack_require__(22);
->>>>>>> f49a2ccd750b2a733f6e63d52dc47e9df8f6e74a
+  __webpack_require__(23);
 } catch (e) {}
 
 /**
@@ -55783,33 +55779,33 @@ var UserList = function (_React$Component) {
         _this.state = {
             users: [],
             access_token: null
+            //login a valid user from db first
         };
         return _this;
     }
 
     _createClass(UserList, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            //login a valid user from db first
-            var url = "http://room8.test:8000/api/";
+        key: "componentWillMount",
+        value: function componentWillMount() {
+            var url = "http://localhost:8000/api/";
             var self = this;
             //send login post request to get access token
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(url + "auth/login", {
-                email: "karine78@example.org",
+                email: "yhirthe@example.net",
                 password: "secret"
             }).then(function (response) {
                 self.setState({
                     access_token: response.data.token_type + " " + response.data.access_token
                 });
-            });
-
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("http://room8.test:8000/api/test/users", {
-                headers: {
-                    'Authorization': self.state.access_token
-                }
-            }).then(function (response) {
-                console.log(response);
-                self.setState({ users: response.data });
+            }).finally(function () {
+                __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("http://localhost:8000/api/test/users", {
+                    headers: {
+                        Authorization: self.state.access_token
+                    }
+                }).then(function (response) {
+                    self.setState({ users: response.data });
+                    console.log(response);
+                });
             });
         }
     }, {
