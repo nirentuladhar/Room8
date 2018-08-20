@@ -28,18 +28,21 @@ export default class UserList extends React.Component {
                         " " +
                         response.data.access_token
                 });
+            })
+            .finally(() => {
+                axios
+                .get(url+"test/users",{
+                    headers: {
+                        Authorization: self.state.access_token
+                    }
+                })
+                .then(response => {
+                    console.log(response);
+                    self.setState({ users: response.data });
+                });
             });
 
-        axios
-            .get("http://room8.test:8000/api/test/users",{
-                headers: {
-                    'Authorization': self.state.access_token
-                }
-            })
-            .then(response => {
-                console.log(response);
-                self.setState({ users: response.data });
-            });
+        
     }
 
     render() {
