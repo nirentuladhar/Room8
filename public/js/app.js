@@ -14136,13 +14136,9 @@ window.Popper = __webpack_require__(5).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(6);
+    window.$ = window.jQuery = __webpack_require__(6);
 
-<<<<<<< HEAD
     __webpack_require__(23);
-=======
-  __webpack_require__(22);
->>>>>>> f49a2ccd750b2a733f6e63d52dc47e9df8f6e74a
 } catch (e) {}
 
 /**
@@ -14164,9 +14160,9 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
+    window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
 } else {
-  console.error("CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token");
+    console.error("CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token");
 }
 
 /**
@@ -55801,15 +55797,15 @@ var UserList = function (_React$Component) {
                 self.setState({
                     access_token: response.data.token_type + " " + response.data.access_token
                 });
-            });
-
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("http://room8.test:8000/api/test/users", {
-                headers: {
-                    'Authorization': self.state.access_token
-                }
-            }).then(function (response) {
-                console.log(response);
-                self.setState({ users: response.data });
+            }).finally(function () {
+                __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url + "test/users", {
+                    headers: {
+                        Authorization: self.state.access_token
+                    }
+                }).then(function (response) {
+                    console.log(response);
+                    self.setState({ users: response.data });
+                });
             });
         }
     }, {
