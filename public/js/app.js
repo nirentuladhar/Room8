@@ -14136,9 +14136,13 @@ window.Popper = __webpack_require__(5).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(6);
+    window.$ = window.jQuery = __webpack_require__(6);
 
+<<<<<<< HEAD
   __webpack_require__(23);
+=======
+    __webpack_require__(23);
+>>>>>>> f202cb2065991ec5eb81f20f16c9474326e38063
 } catch (e) {}
 
 /**
@@ -14160,9 +14164,9 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
+    window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
 } else {
-  console.error("CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token");
+    console.error("CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token");
 }
 
 /**
@@ -55798,13 +55802,22 @@ var UserList = function (_React$Component) {
                     access_token: response.data.token_type + " " + response.data.access_token
                 });
             }).finally(function () {
+<<<<<<< HEAD
                 __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("http://localhost:8000/api/test/users", {
+=======
+                __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url + "test/users", {
+>>>>>>> f202cb2065991ec5eb81f20f16c9474326e38063
                     headers: {
                         Authorization: self.state.access_token
                     }
                 }).then(function (response) {
+<<<<<<< HEAD
                     self.setState({ users: response.data });
                     console.log(response);
+=======
+                    console.log(response);
+                    self.setState({ users: response.data });
+>>>>>>> f202cb2065991ec5eb81f20f16c9474326e38063
                 });
             });
         }
