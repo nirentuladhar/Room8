@@ -5,14 +5,6 @@ import { connect } from "react-redux";
 import { fetchUserList } from "../actions/userActions";
 
 class UserList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            users: [],
-            access_token: null
-        };
-    }
-
     componentDidMount() {
         //login a valid user from db first
         let url = "http://localhost:8000/api/";
@@ -20,7 +12,6 @@ class UserList extends React.Component {
             email: "yhirthe@example.net",
             password: "secret"
         };
-        var self = this;
         //send login post request to get access token
         this.props.fetchUserList(url, credentials);
     }
