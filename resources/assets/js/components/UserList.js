@@ -9,7 +9,7 @@ class UserList extends React.Component {
         //login a valid user from db first
         let url = "http://localhost:8000/api/";
         const credentials = {
-            email: "yhirthe@example.net",
+            email: "test@room8.com",
             password: "secret"
         };
         //send login post request to get access token
