@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTagPayablesTable extends Migration
+class CreatePayablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTagPayablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tag_payables', function (Blueprint $table) {
+        Schema::create('payables', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->unsignedInteger('payer_id');
             $table->unsignedInteger('receiver_id');
@@ -21,6 +21,18 @@ class CreateTagPayablesTable extends Migration
             $table->decimal('amount_due', 8, 2);
             $table->boolean('is_paid');
             $table->timestamps();
+
+            $table->foreign('payer_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('receiver_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('group_id')
+                ->references('id')->on('groups')
+                ->onDelete('cascade');
         });
     }
 
@@ -31,6 +43,6 @@ class CreateTagPayablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_payables');
+        Schema::dropIfExists('payables');
     }
 }

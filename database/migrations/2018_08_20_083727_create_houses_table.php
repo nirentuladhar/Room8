@@ -17,7 +17,7 @@ class CreateHousesTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('name');
             $table->text('description');
-            $table->string('display_picture');
+            $table->string('display_picture')->nullable();
             $table->timestamps();
         });
     }

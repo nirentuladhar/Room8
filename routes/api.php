@@ -35,6 +35,12 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
+
+Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], function ($router) {
+    Route::get('/users/{id}/houses', 'UserController@allHouses');
+    Route::apiResource('users', 'UserController');
+});
+
 Route::group([
     'middleware' => ['api', 'jwt.auth'],
     'prefix' => 'test'

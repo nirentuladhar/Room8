@@ -47,4 +47,19 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+
+    /**
+     * Relationships
+     */
+
+    public function houses()
+    {
+        return $this->belongsToMany('App\House');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group');
+    }
 }
