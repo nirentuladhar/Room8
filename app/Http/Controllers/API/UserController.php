@@ -93,7 +93,20 @@ class UserController extends Controller
     {
         $user = $this->returnValidUser($id);
         if ($user) {
-            return response()->json([$user, $user->load('houses')]);
+            $response["user"] = $user->makeHidden('houses');
+            $response["houses"] = $user->houses;
+            $response["links"] = array(
+                "self" => route('users.houses', ['id' => $id]),
+            );
+
+            foreach ($user->houses as $house) {
+                $house_array[$house->id] = route('houses.show', $house->id);
+            }
+            $response["links"]["houses"] = $house_array;
+
+            return response()->json($response, 200);
         }
+
+        return response()->json(["error" => "No user found"]);
     }
 }

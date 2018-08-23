@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\User;
+use App\House;
 
 
 /*
@@ -37,15 +38,8 @@ Route::group([
 
 
 Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], function ($router) {
-    Route::get('/users/{id}/houses', 'UserController@allHouses');
+    Route::get('/users/{id}/houses', 'UserController@allHouses')->name('users.houses');
     Route::apiResource('users', 'UserController');
-});
 
-Route::group([
-    'middleware' => ['api', 'jwt.auth'],
-    'prefix' => 'test'
-], function ($router) {
-    Route::get('/users', function () {
-        return response()->json(User::all(), 200);
-    });
+    Route::apiResource('houses', 'HouseController');
 });

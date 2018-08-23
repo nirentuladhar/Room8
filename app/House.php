@@ -12,7 +12,11 @@ class House extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'phone', 'display_picture'
+        'name', 'email', 'password', 'username', 'phone', 'display_picture',
+    ];
+
+    protected $hidden = [
+        'pivot'
     ];
 
 
