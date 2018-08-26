@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
-use App\House;
+use App\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class HouseController extends Controller
+class GroupController extends Controller
 {
-
     /**
      * @GET
-     * @route : /houses
-     * Display a listing of the houses.
+     * @route : /groups
+     * Display a listing of the groups.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $response["houses"] = House::all();
-        $response["links"]["self"] = route('houses.index');
+        $response["groups"] = Group::all();
+        $response["links"]["self"] = route('groups.index');
         return response()->json($response, 200);
     }
 
@@ -36,16 +35,16 @@ class HouseController extends Controller
 
     /**
      * @GET
-     * @route : /houses/{house_id}
-     * Display the specified house.
+     * @route : /groups/{group_id}
+     * Display the specified group.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(House $house)
+    public function show(Group $group)
     {
-        $response["house"] = $house;
-        $response["links"]["self"] = route('houses.show', $house->id);
+        $response["group"] = $group;
+        $response["links"]["self"] = route('groups.show', $group->id);
         return response()->json($response, 200);
     }
 

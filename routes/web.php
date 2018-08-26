@@ -20,21 +20,6 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', 'PublicController@index')->name('public.index');
 
-    Route::get('/test', function () {
-
-    });
-
 });
-
-
-/**
- * ROUTES REQUIRING AUTHENTICATION
- */
-
-Route::group(['middleware' => ['auth']], function () {
-
-});
-
-
 
 
