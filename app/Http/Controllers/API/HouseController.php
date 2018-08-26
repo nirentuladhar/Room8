@@ -71,4 +71,35 @@ class HouseController extends Controller
     {
         //
     }
+
+    public function allGroups(House $house)
+    {
+        $response["house"] = $house->makeHidden('groups');
+        $response["groups"] = $house->groups->makeHidden('pivot');
+        $response["links"] = array(
+            "self" => route('houses.groups', ['id' => $house->id]),
+        );
+
+        foreach ($house->groups as $group) {
+            $group_array[$group->id] = route('groups.show', $group->id);
+        }
+        $response["links"]["groups"] = $group_array;
+
+        return response()->json($response, 200);
+    }
+
+    public function allUsers(House $house)
+    {
+        $hidden = ['created_at', 'updated_at', 'users', 'pivot'];
+        $response["house"] = $house->makeHidden($hidden);
+        $response["users"] = $house->users->makeHidden($hidden);
+        $response["links"] = array(
+            "self" => route('houses.users', ['id' => $house->id]),
+        );
+        foreach ($house->users as $user) {
+            $user_array[$user->id] = route('users.show', $user->id);
+        }
+        $response["links"]["users"] = $user_array;
+        return response()->json($response, 200);
+    }
 }

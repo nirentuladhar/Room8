@@ -64,7 +64,7 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     ));
     Route::get('/users/{user}', 'UserController@show')->name('users.show');
     Route::get('/users/{user}/houses', 'UserController@allHouses')->name('users.houses');
-
+    Route::get('/users/{user}/groups', 'UserController@allGroups')->name('users.groups');
 
     /**
      * House Routes
@@ -77,6 +77,8 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
         'as' => 'houses.update'
     ));
     Route::get('/houses/{house}', 'HouseController@show')->name('houses.show');
+    Route::get('/houses/{house}/groups', 'HouseController@allGroups')->name('houses.groups');
+    Route::get('/houses/{house}/users', 'HouseController@allUsers')->name('houses.users');
 
 
     /**
@@ -91,5 +93,7 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
         'as' => 'groups.update'
     ));
     Route::get('/groups/{group}', 'GroupController@show')->name('groups.show');
+    Route::get('/groups/{group}/users', 'GroupController@allUsers')->name('groups.users');
+    Route::get('/groups/{group}/house', 'GroupController@house')->name('groups.house');
 
 });

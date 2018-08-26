@@ -70,4 +70,38 @@ class GroupController extends Controller
     {
         //
     }
+
+
+    /**
+     * @GET
+     * Display specified group's users
+     *
+     * @param  Group  $group
+     * @return \Illuminate\Http\Response
+     */
+
+    public function allUsers(Group $group)
+    {
+        $response["group"] = $group->makeHidden(['users']);
+        $response["users"] = $group->users->makeHidden('pivot');
+        $response["links"] = array(
+            "self" => route('groups.users', ['id' => $group->id]),
+        );
+        foreach ($group->users as $user) {
+            $user_array[$user->id] = route('users.show', $user->id);
+        }
+        $response["links"]["users"] = $user_array;
+        return response()->json($response, 200);
+    }
+
+    public function house(Group $group)
+    {
+        $response["group"] = $group->makeHidden(['house', 'house_id']);
+        $response["house"] = $group->house;
+        $response["links"] = array(
+            "self" => route('groups.users', ['id' => $group->id]),
+            "house" => route('houses.show', ['id' => $group->house_id])
+        );
+        return response()->json($response, 200);
+    }
 }

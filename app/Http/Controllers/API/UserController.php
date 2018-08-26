@@ -9,15 +9,7 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
-    private function returnValidUser($id)
-    {
-        $user = User::find($id);
-        if (!is_null($user)) {
-            return $user;
-        } else {
-            return false;
-        }
-    }
+
 
     /**
      * @GET
@@ -50,13 +42,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //$user = $this->returnValidUser($id);
-        if ($user) {
-            UserResource::withoutWrapping();
-            return new UserResource($user);
-        } else {
-            return response()->json(['error' => 'No user found']);
-        }
+
+        UserResource::withoutWrapping();
+        return new UserResource($user);
     }
 
     /**
@@ -86,27 +74,38 @@ class UserController extends Controller
      * @GET
      * Display specified user's houses
      *
-     * @param  int  $id
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function allHouses($id)
+    public function allHouses(User $user)
     {
-        $user = $this->returnValidUser($id);
-        if ($user) {
-            $response["user"] = $user->makeHidden('houses');
-            $response["houses"] = $user->houses;
-            $response["links"] = array(
-                "self" => route('users.houses', ['id' => $id]),
-            );
+        $response["user"] = $user->makeHidden('houses');
+        $response["houses"] = $user->houses;
+        $response["links"] = array(
+            "self" => route('users.houses', ['id' => $user->id]),
+        );
 
-            foreach ($user->houses as $house) {
-                $house_array[$house->id] = route('houses.show', $house->id);
-            }
-            $response["links"]["houses"] = $house_array;
-
-            return response()->json($response, 200);
+        foreach ($user->houses as $house) {
+            $house_array[$house->id] = route('houses.show', $house->id);
         }
+        $response["links"]["houses"] = $house_array;
 
-        return response()->json(["error" => "No user found"]);
+        return response()->json($response, 200);
+    }
+
+    public function allGroups(User $user)
+    {
+        $response["user"] = $user->makeHidden('groups');
+        $response["groups"] = $user->groups->makeHidden('pivot');
+        $response["links"] = array(
+            "self" => route('users.groups', ['id' => $user->id]),
+        );
+
+        foreach ($user->groups as $group) {
+            $group_array[$group->id] = route('groups.show', $group->id);
+        }
+        $response["links"]["groups"] = $group_array;
+
+        return response()->json($response, 200);
     }
 }
