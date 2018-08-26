@@ -65,9 +65,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->delete()) {
+            return response()->json(["status" => "OK"], 200);
+        }
+        return response()->json(["status" => "ERROR"], 403);
+
     }
 
     /**

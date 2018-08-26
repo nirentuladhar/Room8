@@ -26,7 +26,7 @@ use App\House;
  * TOKEN_EXPIRED            ->  JWT token is used after its expires_in time
  * TOKEN_BLACKLISTED        ->  JWT token is blacklisted and have to fetch a new one by logging in again
  * 
- * UNAUTHORIZED_REQUEST     ->  The request is unauthorized
+ * UNAUTHORIZED_REQUEST     ->  The request is unauthorized (No token used)
  * 
  * MODEL_NOT_FOUND          ->  Model not found for the id
  * URL_NOT_FOUND            ->  URL is invalid (It is not handled in api.php)
@@ -57,7 +57,7 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
      */
     Route::get('/users', 'UserController@index')->name('users.index');
     Route::post('/users', 'UserController@store')->name('users.store');
-    Route::delete('/users/{user}')->name('users.destroy');
+    Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
     Route::match(array('PUT', 'PATCH'), "/users/{user}", array(
         'uses' => 'UserController@update',
         'as' => 'users.update'
@@ -71,7 +71,7 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
      */
     Route::get('/houses', 'HouseController@index')->name('houses.index');
     Route::post('/houses', 'HouseController@store')->name('houses.store');
-    Route::delete('/houses/{house}')->name('houses.destroy');
+    Route::delete('/houses/{house}', 'HouseController@destroy')->name('houses.destroy');
     Route::match(array('PUT', 'PATCH'), "/houses/{house}", array(
         'uses' => 'HouseController@update',
         'as' => 'houses.update'
@@ -87,7 +87,7 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
 
     Route::get('/groups', 'GroupController@index')->name('groups.index');
     Route::post('/groups', 'GroupController@store')->name('groups.store');
-    Route::delete('/groups/{group}')->name('groups.destroy');
+    Route::delete('/groups/{group}', 'GroupController@destroy')->name('groups.destroy');
     Route::match(array('PUT', 'PATCH'), "/groups/{group}", array(
         'uses' => 'GroupController@update',
         'as' => 'groups.update'
