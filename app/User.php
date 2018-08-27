@@ -29,6 +29,20 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
+     * Model Store rules
+     */
+
+    public static $storeRules = array(
+        'name' => 'required|max:255',
+        'username' => 'required|min:6|max:255|alpha_dash|unique:users,username',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable|numeric',
+        'display_picture' => 'nullable|url',
+        'password' => 'required|min:6|max:255'
+    );
+
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed

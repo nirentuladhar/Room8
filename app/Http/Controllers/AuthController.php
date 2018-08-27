@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers;
+use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -22,15 +25,36 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        if ($request->has(['email', 'password'])) {
+            $credentials = $request->only('email', 'password');
+        } else if ($request->has(['username', 'password'])) {
+            $credentials = $request->only('username', 'password');
+        } else {
+            abort(401);
+        }
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            abort(401);
         }
 
         return $this->respondWithToken($token);
+    }
+
+    public function register(Request $request)
+    {
+        $validate = Validator::make($request->all(), User::$storeRules);
+        if (!$validate->fails()) {
+            $user = new User($request->all());
+            $user->password = bcrypt($request->password);
+            if ($user->save()) {
+                return response()->json(["status" => "CREATED"], 201); // 201 - created
+            }
+            return response()->json(["status" => "FAILED"], 400);
+        } else {
+            return response()->json($validate->errors(), 422);// 422 - unprocessable request
+        }
     }
 
     /**

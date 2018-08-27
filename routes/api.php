@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\User;
-use App\House;
 
 
 /**
@@ -35,10 +33,11 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::post('login', 'AuthController@login')->name('auth.login');
+    Route::post('logout', 'AuthController@logout')->name('auth.logout');
+    Route::post('refresh', 'AuthController@refresh')->name('auth.refresh');
+    Route::post('register', 'AuthController@register')->name('auth.register');
+    Route::post('me', 'AuthController@me')->name('auth.me');
 });
 
 //---------------------------------------------------------------
