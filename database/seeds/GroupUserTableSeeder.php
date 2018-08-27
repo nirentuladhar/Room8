@@ -18,10 +18,13 @@ class GroupUserTableSeeder extends Seeder
         House::all()->each(function ($house) {
             $house->groups->each(function ($group) use ($house) {
                 $max = count($house->users);
-                $rand = rand(1, $max);
-                for ($i = 0; $i < $rand; $i++) {
-                    $group->users()->attach($house->users->random()->id);
+                if ($max) {
+                    $rand = rand(1, $max);
+                    for ($i = 0; $i < $rand; $i++) {
+                        $group->users()->attach($house->users->random()->id);
+                    }
                 }
+
             });
         });
 

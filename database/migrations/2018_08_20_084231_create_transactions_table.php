@@ -17,6 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->increments('id')->unsigned();
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('group_id');
+            $table->unsignedInteger('house_id');
             $table->text('description')->nullable();
             $table->decimal('amount', 8, 2);
             $table->string('location')->nullable();

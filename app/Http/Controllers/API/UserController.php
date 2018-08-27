@@ -112,4 +112,20 @@ class UserController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function allTransactions(User $user)
+    {
+        $response["user"] = $user->makeHidden('transactions');
+        $response["transactions"] = $user->transactions->makeHidden(['pivot', 'user_id']);
+        $response["links"] = array(
+            "self" => route('users.transactions', ['id' => $user->id]),
+        );
+
+        foreach ($user->transactions as $transaction) {
+            $transaction_array[$transaction->id] = route('transactions.show', $transaction->id);
+        }
+        $response["links"]["transactions"] = $transaction_array;
+
+        return response()->json($response, 200);
+    }
 }

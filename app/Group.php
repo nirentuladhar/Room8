@@ -15,6 +15,10 @@ class Group extends Model
         'name', 'description', 'house_id'
     ];
 
+    protected $hidden = [
+        'pivot'
+    ];
+
     /**
      * Relationships
      */
@@ -27,6 +31,11 @@ class Group extends Model
     public function users()
     {
         return $this->belongsToMany('App\User');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
     }
 
 

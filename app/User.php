@@ -25,7 +25,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'phone',
+        'password', 'remember_token', 'phone', 'pivot'
     ];
 
     /**
@@ -61,5 +61,10 @@ class User extends Authenticatable implements JWTSubject
     public function groups()
     {
         return $this->belongsToMany('App\Group');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
     }
 }

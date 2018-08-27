@@ -33,4 +33,9 @@ class House extends Model
     {
         return $this->hasMany('App\Group');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
+    }
 }

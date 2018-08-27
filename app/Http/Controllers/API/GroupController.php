@@ -83,7 +83,7 @@ class GroupController extends Controller
     public function allUsers(Group $group)
     {
         $response["group"] = $group->makeHidden(['users']);
-        $response["users"] = $group->users->makeHidden('pivot');
+        $response["users"] = $group->users;
         $response["links"] = array(
             "self" => route('groups.users', ['id' => $group->id]),
         );
@@ -102,6 +102,22 @@ class GroupController extends Controller
             "self" => route('groups.users', ['id' => $group->id]),
             "house" => route('houses.show', ['id' => $group->house_id])
         );
+        return response()->json($response, 200);
+    }
+
+    public function allTransactions(Group $group)
+    {
+        $response["group"] = $group->makeHidden('transactions');
+        $response["transactions"] = $group->transactions->makeHidden(['pivot', 'group_id']);
+        $response["links"] = array(
+            "self" => route('groups.transactions', ['id' => $group->id]),
+        );
+
+        foreach ($group->transactions as $transaction) {
+            $transaction_array[$transaction->id] = route('transactions.show', $transaction->id);
+        }
+        $response["links"]["transactions"] = $transaction_array;
+
         return response()->json($response, 200);
     }
 }

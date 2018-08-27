@@ -52,9 +52,9 @@ Route::group([
 
 Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], function ($router) {
 
-    /**
+    /***************************************************
      * User Routes
-     */
+     ***************************************************/
     Route::get('/users', 'UserController@index')->name('users.index');
     Route::post('/users', 'UserController@store')->name('users.store');
     Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
@@ -65,9 +65,14 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/users/{user}', 'UserController@show')->name('users.show');
     Route::get('/users/{user}/houses', 'UserController@allHouses')->name('users.houses');
     Route::get('/users/{user}/groups', 'UserController@allGroups')->name('users.groups');
+    Route::get('/users/{user}/transactions', 'UserController@allTransactions')->name('users.transactions');
 
-    /**
+
+    /***************************************************
      * House Routes
+     ***************************************************/
+    /**
+     * Normal CRUD Routes
      */
     Route::get('/houses', 'HouseController@index')->name('houses.index');
     Route::post('/houses', 'HouseController@store')->name('houses.store');
@@ -77,13 +82,23 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
         'as' => 'houses.update'
     ));
     Route::get('/houses/{house}', 'HouseController@show')->name('houses.show');
+    /**
+     * Relationship Routes
+     */
     Route::get('/houses/{house}/groups', 'HouseController@allGroups')->name('houses.groups');
     Route::get('/houses/{house}/users', 'HouseController@allUsers')->name('houses.users');
-
-
+    Route::get('/houses/{house}/transactions', 'HouseController@allTransactions')->name('houses.transactions');
     /**
-     * Group Routes
+     * Collection Routes
      */
+    Route::get('/houses/{house}/collection', 'HouseController@collection')->name('houses.collection');
+
+
+
+
+    /****************************************************
+     * Group Routes
+     ****************************************************/
 
     Route::get('/groups', 'GroupController@index')->name('groups.index');
     Route::post('/groups', 'GroupController@store')->name('groups.store');
@@ -95,5 +110,21 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/groups/{group}', 'GroupController@show')->name('groups.show');
     Route::get('/groups/{group}/users', 'GroupController@allUsers')->name('groups.users');
     Route::get('/groups/{group}/house', 'GroupController@house')->name('groups.house');
+    Route::get('/groups/{group}/transactions', 'GroupController@allTransactions')->name('groups.transactions');
+
+
+    /***************************************************
+     * Transaction Routes
+     ***************************************************/
+
+    Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
+    Route::post('/transactions', 'TransactionController@store')->name('transactions.store');
+    Route::delete('/transactions/{transaction}', 'TransactionController@destroy')->name('transactions.destroy');
+    Route::match(array('PUT', 'PATCH'), "/transactions/{transaction}", array(
+        'uses' => 'TransactionController@update',
+        'as' => 'transactions.update'
+    ));
+    Route::get('/transactions/{transaction}', 'TransactionController@show')->name('transactions.show');
+
 
 });
