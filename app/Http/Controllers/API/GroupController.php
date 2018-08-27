@@ -5,9 +5,22 @@ namespace App\Http\Controllers\API;
 use App\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['authorization.group'], ['except' => ['index', 'show']]);
+    }
+
+
     /**
      * @GET
      * @route : /groups

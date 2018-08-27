@@ -11,6 +11,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -69,6 +70,8 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'MODEL_NOT_FOUND'], 404);
         } else if ($exception instanceof NotFoundHttpException) {
             return response()->json(['error' => 'URL_NOT_FOUND'], 404);
+        } else if ($exception instanceof HttpException) {
+            return response()->json(['error' => 'ACCESS_DENIED'], 403);
         }
         return parent::render($request, $exception);
     }

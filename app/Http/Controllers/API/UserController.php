@@ -10,6 +10,15 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
 
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['authorization.user'], ['except' => ['index', 'show']]);
+    }
 
     /**
      * @GET

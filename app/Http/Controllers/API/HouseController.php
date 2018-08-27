@@ -5,9 +5,21 @@ namespace App\Http\Controllers\API;
 use App\House;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class HouseController extends Controller
 {
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['authorization.house'], ['except' => ['index', 'show']]);
+    }
+
 
     /**
      * @GET
