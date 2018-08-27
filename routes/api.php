@@ -5,38 +5,30 @@ use App\User;
 use App\House;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
- */
-
 /**
- * Types of errors
+ * Types of errors that can be returned from the API
  * syntax : ['error'=>'error_type']
  * 
  * ERROR TYPE               |       MEANING
- * ________________________________________________________________________________________________________
+ * _____________________________________________________________________________
  * TOKEN_INVALID            ->  JWT token is invalid
  * TOKEN_EXPIRED            ->  JWT token is used after its expires_in time
- * TOKEN_BLACKLISTED        ->  JWT token is blacklisted and have to fetch a new one by logging in again
+ * TOKEN_BLACKLISTED        ->  JWT token is blacklisted and have to fetch 
+ *                              a new one by logging in again
  * 
  * UNAUTHORIZED_REQUEST     ->  The request is unauthorized (No token used)
  * 
  * MODEL_NOT_FOUND          ->  Model not found for the id
  * URL_NOT_FOUND            ->  URL is invalid (It is not handled in api.php)
+ * ACCESS_DENIED            ->  User is denied access to the resource 
+ *                              (User not in the group/house etc)
  */
 
 
 
-/**
- * Authentication Routes
- */
+//---------------------------------------------------------------
+// Authentication Routes
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -49,12 +41,14 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
+//---------------------------------------------------------------
+
 
 Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], function ($router) {
 
-    /***************************************************
-     * User Routes
-     ***************************************************/
+//---------------------------------------------------------------
+// User Routes
+
     Route::get('/users', 'UserController@index')->name('users.index');
     Route::post('/users', 'UserController@store')->name('users.store');
     Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
@@ -67,10 +61,12 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/users/{user}/groups', 'UserController@allGroups')->name('users.groups');
     Route::get('/users/{user}/transactions', 'UserController@allTransactions')->name('users.transactions');
 
+//---------------------------------------------------------------
 
-    /***************************************************
-     * House Routes
-     ***************************************************/
+
+//---------------------------------------------------------------
+// House Routes
+
     /**
      * Normal CRUD Routes
      */
@@ -93,12 +89,13 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
      */
     Route::get('/houses/{house}/collection', 'HouseController@collection')->name('houses.collection');
 
+//---------------------------------------------------------------
 
 
 
-    /****************************************************
-     * Group Routes
-     ****************************************************/
+
+//---------------------------------------------------------------
+// Group Routes
 
     Route::get('/groups', 'GroupController@index')->name('groups.index');
     Route::post('/groups', 'GroupController@store')->name('groups.store');
@@ -112,12 +109,14 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/groups/{group}/house', 'GroupController@house')->name('groups.house');
     Route::get('/groups/{group}/transactions', 'GroupController@allTransactions')->name('groups.transactions');
 
+//---------------------------------------------------------------
 
-    /***************************************************
-     * Transaction Routes
-     ***************************************************/
 
-    Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
+
+//---------------------------------------------------------------
+// Transaction Routes
+
+    // Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
     Route::post('/transactions', 'TransactionController@store')->name('transactions.store');
     Route::delete('/transactions/{transaction}', 'TransactionController@destroy')->name('transactions.destroy');
     Route::match(array('PUT', 'PATCH'), "/transactions/{transaction}", array(
@@ -126,5 +125,6 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     ));
     Route::get('/transactions/{transaction}', 'TransactionController@show')->name('transactions.show');
 
+//---------------------------------------------------------------
 
 });

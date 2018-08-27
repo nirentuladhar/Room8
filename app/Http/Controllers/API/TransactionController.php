@@ -4,9 +4,22 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Transaction;
 
 class TransactionController extends Controller
 {
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['authorization.transaction'], ['except' => ['index']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -34,9 +47,16 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        //
+        $hidden = ['group', 'house', 'group_id', 'house_id'];
+        $response["transaction"] = $transaction->makeHidden($hidden);
+        $response["group"] = $transaction->group;
+        $response["house"] = $transaction->house;
+        $response["links"]["self"] = route('transactions.show', ['id' => $transaction->id]);
+        $response["links"]["group"] = route('groups.show', ['id' => $transaction->group_id]);
+        $response["links"]["house"] = route('houses.show', ['id' => $transaction->house_id]);
+        return response()->json($response, 200);
     }
 
     /**

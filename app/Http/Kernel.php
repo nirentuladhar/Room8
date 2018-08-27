@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'authorization.group' => \App\Http\Middleware\Authorization\GroupAuthorization::class,
         'authorization.house' => \App\Http\Middleware\Authorization\HouseAuthorization::class,
         'authorization.user' => \App\Http\Middleware\Authorization\UserAuthorization::class,
+        'authorization.transaction' => \App\Http\Middleware\Authorization\TransactionAuthorization::class,
 
     ];
 }
