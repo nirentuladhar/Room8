@@ -7,14 +7,37 @@ use Illuminate\Database\Eloquent\Model;
 class Payable extends Model
 {
 
+    /**
+     * Query Scopes
+     */
 
-    public function user()
+    public function scopePaid($query)
     {
-        $this->belongsTo('App\User');
+        return $query->where('is_paid', '1');
+    }
+
+    public function scopeNotPaid($query)
+    {
+        return $query->where('is_paid', '0');
+    }
+
+
+    /**
+     * Relationships
+     */
+
+    public function payer()
+    {
+        return $this->belongsTo('App\User', 'payer_id', 'id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo('App\User', 'receiver_id', 'id');
     }
 
     public function group()
     {
-        $this->belongsTo('App\Group');
+        return $this->belongsTo('App\Group');
     }
 }

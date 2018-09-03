@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['authorization.user'], ['except' => ['index', 'show']]);
+        $this->middleware(['authorization.user'], ['except' => ['index', 'show', 'toPay', 'toReceive']]);
     }
 
     /**
@@ -30,6 +30,7 @@ class UserController extends Controller
     {
         return response()->json(User::all(), 200);
     }
+
 
     /**
      * Store a newly created user in storage.
@@ -125,7 +126,7 @@ class UserController extends Controller
     public function allTransactions(User $user)
     {
         $response["user"] = $user->makeHidden('transactions');
-        $response["transactions"] = $user->transactions->makeHidden(['pivot', 'user_id']);
+        $response["transactions"] = $user->transactions()->makeHidden(['pivot', 'user_id']);
         $response["links"] = array(
             "self" => route('users.transactions', ['id' => $user->id]),
         );
@@ -134,6 +135,36 @@ class UserController extends Controller
             $transaction_array[$transaction->id] = route('transactions.show', $transaction->id);
         }
         $response["links"]["transactions"] = $transaction_array;
+
+        return response()->json($response, 200);
+    }
+
+    public function toPay(User $user)
+    {
+        $toPay = $user->toPay()->notPaid()->get();
+        $response["user"] = $user->makeHidden('toPay');
+        $response["toPay"] = $toPay->makeHidden('payer_id');
+        $response["links"]["self"] = route('users.toPay', $user->id);
+
+        foreach ($toPay as $tp) {
+            $tp_array[$tp->id] = route('payables.show', $tp->id);
+        }
+        isset($tp_array) ? $response["links"]["toPay"] = $tp_array : null;
+
+        return response()->json($response, 200);
+    }
+
+    public function toReceive(User $user)
+    {
+        $toReceive = $user->toReceive()->notPaid()->get();
+        $response["user"] = $user->makeHidden('toRecieve');
+        $response["receive"] = $toReceive->makeHidden('receiver_id');
+        $response["links"]["self"] = route('users.toReceive', $user->id);
+
+        foreach ($toReceive as $tr) {
+            $tr_array[$tr->id] = route('payables.show', $tr->id);
+        }
+        isset($tr_array) ? $response["links"]["toReceive"] = $tr_array : null;
 
         return response()->json($response, 200);
     }

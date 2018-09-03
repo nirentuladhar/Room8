@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Payable;
 use Illuminate\Http\Request;
+use App\User;
+use App\Http\Controllers\Controller;
 
 class PayableController extends Controller
 {
@@ -14,7 +16,7 @@ class PayableController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -36,7 +38,19 @@ class PayableController extends Controller
      */
     public function show(Payable $payable)
     {
-        //
+        $response["payable"] = $payable->makeHidden(['payer', 'receiver', 'group']);
+        $response["payer"] = $payable->payer;
+        $response["receiver"] = $payable->receiver;
+        $response["group"] = $payable->group->makeHidden('house');
+        $response["house"] = $payable->group->house;
+
+        $response["links"]["self"] = route('payables.show', $payable->id);
+        $response["links"]["payer"] = route('users.toPay', $payable->payer->id);
+        $response["links"]["receiver"] = route('users.toReceive', $payable->receiver->id);
+        $response["links"]["group"] = route('groups.show', $payable->group->id);
+        $response["links"]["house"] = route('houses.show', $payable->group->house->id);
+
+        return response()->json($response, 200);
     }
 
     /**

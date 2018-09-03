@@ -16,50 +16,48 @@ class PayablesTableSeeder extends Seeder
     {
         $house = House::all()->random();
         $group = $house->groups->random();
-        $payables = array();
-        $finalAssesment = array();
-        $grand_total = 0;
-        $per_person = 0;
-        $receiver = 0;
+        if (count($group->users) > 0) {
+            $payables = array();
+            $finalAssesment = array();
+            $grand_total = 0;
+            $per_person = 0;
+            $receiver = 0;
         //get grand total
-        foreach ($group->transactions as $transaction) {
+            foreach ($group->transactions as $transaction) {
             //note:dont forget to check if transaction is already calculated (is_calculated)
-            if (!$transaction->is_calculated) {
-                $grand_total += $transaction->amount;
-                if (array_key_exists($transaction->user_id, $payables)) {
-                    $payables[$transaction->user_id] += $transaction->amount;
-                } else {
-                    $payables[$transaction->user_id] = $transaction->amount;
+                if (!$transaction->is_calculated) {
+                    $grand_total += $transaction->amount;
+                    if (array_key_exists($transaction->user_id, $payables)) {
+                        $payables[$transaction->user_id] += $transaction->amount;
+                    } else {
+                        $payables[$transaction->user_id] = $transaction->amount;
+                    }
+                    $transaction->is_calculated = 1;
+                    $transaction->save();
                 }
-                $transaction->is_calculated = 1;
-                $transaction->save();
             }
-        }
         //perperson
-        $per_person = round($grand_total / count($payables), 2);
+            $per_person = round($grand_total / count($payables), 2);
         //calculate payables value - per_person (order is imp)
-        foreach ($payables as $user => $amount) {
-            $payables[$user] = ($amount - $per_person);
-            if ($payables[$user] > 0) {
-                $receiver = $user;
+            foreach ($payables as $user => $amount) {
+                $payables[$user] = ($amount - $per_person);
+                if ($payables[$user] > 0) {
+                    $receiver = $user;
+                }
             }
-        }
 
         //for each payable insert into payable table
-        foreach ($payables as $user => $amount) {
-            if ($amount < 0 && $amount != 0) {
-                $toPay = new Payable;
-                $toPay->payer_id = $user;
-                $toPay->receiver_id = $receiver;
-                $toPay->group_id = $group->id;
-                $toPay->amount_due = abs($amount);
-                $toPay->is_paid = 0;
-                $toPay->save();
+            foreach ($payables as $user => $amount) {
+                if ($amount < 0 && $amount != 0) {
+                    $toPay = new Payable;
+                    $toPay->payer_id = $user;
+                    $toPay->receiver_id = $receiver;
+                    $toPay->group_id = $group->id;
+                    $toPay->amount_due = abs($amount);
+                    $toPay->is_paid = 0;
+                    $toPay->save();
+                }
             }
         }
-
-
-
-
     }
 }

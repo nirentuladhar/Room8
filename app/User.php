@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -62,7 +63,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-
     /**
      * Relationships
      */
@@ -82,8 +82,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Transaction');
     }
 
-    public function payables()
+    public function toPay()
     {
-        return $this->hasMany('App\Payable');
+        return $this->hasMany('App\Payable', 'payer_id', 'id');
+    }
+
+    public function toReceive()
+    {
+        return $this->hasMany('App\Payable', 'receiver_id', 'id');
     }
 }

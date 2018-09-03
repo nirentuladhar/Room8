@@ -59,6 +59,8 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/users/{user}/houses', 'UserController@allHouses')->name('users.houses');
     Route::get('/users/{user}/groups', 'UserController@allGroups')->name('users.groups');
     Route::get('/users/{user}/transactions', 'UserController@allTransactions')->name('users.transactions');
+    Route::get('/users/{user}/pay', 'UserController@toPay')->name('users.toPay');
+    Route::get('/users/{user}/receive', 'UserController@toReceive')->name('users.toReceive');
 
 //---------------------------------------------------------------
 
@@ -123,6 +125,20 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
         'as' => 'transactions.update'
     ));
     Route::get('/transactions/{transaction}', 'TransactionController@show')->name('transactions.show');
+
+//---------------------------------------------------------------
+
+
+//---------------------------------------------------------------
+// Payable Routes
+
+    // Route::post('/payables', 'PayableController@store')->name('payables.store');
+    // Route::delete('/payables/{payable}', 'PayableController@destroy')->name('payables.destroy');
+    // Route::match(array('PUT', 'PATCH'), "/payables/{payable}", array(
+    //     'uses' => 'PayableController@update',
+    //     'as' => 'payables.update'
+    // ));
+    Route::get('/payables/{payable}', 'PayableController@show')->name('payables.show');
 
 //---------------------------------------------------------------
 
