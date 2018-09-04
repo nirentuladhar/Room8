@@ -19,7 +19,7 @@ class TransactionAuthorization
         $user = Auth::user();
         if ($request->route()->hasParameter('transaction')) {
             $transaction = $request->route()->parameter('transaction');
-            if (in_array($transaction->toArray(), Auth::user()->transactions->toArray())) {
+            if (in_array($transaction->toArray(), $user->transactions->toArray())) {
                 return $next($request); // Authorized
             }
         }

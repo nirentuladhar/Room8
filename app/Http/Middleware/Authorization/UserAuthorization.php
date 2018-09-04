@@ -18,8 +18,8 @@ class UserAuthorization
     {
         $user = Auth::user();
         if ($request->route()->hasParameter('user')) {
-            $user = $request->route()->parameter('user');
-            if ($user->id == Auth::user()->id) {
+            $reqUser = $request->route()->parameter('user');
+            if ($reqUser->id == $user->id) {
                 return $next($request); // Authorized
             }
         }

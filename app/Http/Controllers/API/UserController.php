@@ -172,4 +172,34 @@ class UserController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function paid(User $user)
+    {
+        $paidPayables = $user->toPay()->paid()->get();
+        $response["user"] = $user->makeHidden('toPay');
+        $response["paid"] = $paidPayables->makeHidden('payer_id');
+        $response["links"]["self"] = route('users.paid', $user->id);
+
+        foreach ($paidPayables as $paid) {
+            $paid_array[$paid->id] = route('payables.show', $paid->id);
+        }
+        isset($paid_array) ? $response["links"]["paid"] = $paid_array : null;
+
+        return response()->json($response, 200);
+    }
+
+    public function received(User $user)
+    {
+        $receivedPayables = $user->toReceive()->paid()->get();
+        $response["user"] = $user->makeHidden('toRecieve');
+        $response["received"] = count($receivedPayables) ? $receivedPayables->makeHidden('receiver_id') : "none";
+        $response["links"]["self"] = route('users.received', $user->id);
+
+        foreach ($receivedPayables as $received) {
+            $received_array[$received->id] = route('payables.show', $received->id);
+        }
+        isset($received_array) ? $response["links"]["received"] = $received_array : null;
+
+        return response()->json($response, 200);
+    }
 }

@@ -17,6 +17,6 @@ class UsersTableSeeder extends Seeder
             'username' => 'iLive2Test',
             'password' => bcrypt('secret'),
         ]);
-        factory(App\User::class, 10)->create();
+        factory(App\User::class, 200)->create();
     }
 }

@@ -61,6 +61,8 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/users/{user}/transactions', 'UserController@allTransactions')->name('users.transactions');
     Route::get('/users/{user}/pay', 'UserController@toPay')->name('users.toPay');
     Route::get('/users/{user}/receive', 'UserController@toReceive')->name('users.toReceive');
+    Route::get('/users/{user}/paid', 'UserController@paid')->name('users.paid');
+    Route::get('/users/{user}/received', 'UserController@received')->name('users.received');
 
 //---------------------------------------------------------------
 

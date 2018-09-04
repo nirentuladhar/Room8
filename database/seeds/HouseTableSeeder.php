@@ -13,6 +13,6 @@ class HouseTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(House::class, 3)->create();
+        factory(House::class, 30)->create();
     }
 }

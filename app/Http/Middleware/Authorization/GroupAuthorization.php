@@ -20,7 +20,7 @@ class GroupAuthorization
         $user = Auth::user();
         if ($request->route()->hasParameter('group')) {
             $group = $request->route()->parameter('group');
-            if (in_array($group->toArray(), Auth::user()->groups->toArray())) {
+            if (in_array($group->toArray(), $user->groups->toArray())) {
                 return $next($request); // Authorized
             }
         }

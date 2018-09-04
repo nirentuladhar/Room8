@@ -19,7 +19,7 @@ class HouseAuthorization
         $user = Auth::user();
         if ($request->route()->hasParameter('house')) {
             $house = $request->route()->parameter('house');
-            if (in_array($house->toArray(), Auth::user()->houses->toArray())) {
+            if (in_array($house->toArray(), $user->houses->toArray())) {
                 return $next($request); // Authorized
             }
         }
