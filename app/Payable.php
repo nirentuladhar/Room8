@@ -7,6 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Payable extends Model
 {
 
+    protected $fillable = [
+        'payer_id', 'receiver_id', 'group_id', 'amount_due', 'is_paid'
+    ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $casts = [
+        'is_paid' => 'boolean',
+        'amount_due' => 'float'
+    ];
+
     /**
      * Query Scopes
      */

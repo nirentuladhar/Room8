@@ -126,7 +126,11 @@ class UserController extends Controller
     public function allTransactions(User $user)
     {
         $response["user"] = $user->makeHidden('transactions');
-        $response["transactions"] = $user->transactions()->makeHidden(['pivot', 'user_id']);
+        if (count($user->transactions) > 0) {
+            $response["transactions"] = $user->transactions->makeHidden('user_id');
+        } else {
+            $response["transactions"] = "none";
+        }
         $response["links"] = array(
             "self" => route('users.transactions', ['id' => $user->id]),
         );

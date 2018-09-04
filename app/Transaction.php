@@ -7,11 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-        'user_id', 'group_id', 'description', 'amount', 'location',
+        'user_id', 'group_id', 'description', 'amount', 'location', 'is_calculated'
     ];
 
     protected $hidden = [
-        'pivot'
+        'pivot', 'created_at', 'updated_at'
+    ];
+
+    protected $dates = [
+        'created_at', 'updated_at'
+    ];
+
+    protected $casts = [
+        'is_calculated' => 'boolean',
+        'amount' => 'float'
     ];
 
     public function user()

@@ -16,7 +16,11 @@ class Group extends Model
     ];
 
     protected $hidden = [
-        'pivot'
+        'pivot', 'created_at', 'updated_at'
+    ];
+
+    protected $dates = [
+        'created_at', 'updated_at'
     ];
 
     /**
