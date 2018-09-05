@@ -23,9 +23,10 @@ class GroupAuthorization
             if (in_array($group->toArray(), $user->groups->toArray())) {
                 return $next($request); // Authorized
             }
-        } else {
-            return $next($request);
+            return abort(403); // Unauthorized
         }
-        return abort(403); // Unauthorized
+
+        //no param
+        return $next($request);
     }
 }

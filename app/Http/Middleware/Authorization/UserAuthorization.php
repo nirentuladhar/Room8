@@ -22,9 +22,10 @@ class UserAuthorization
             if ($reqUser->id == $user->id) {
                 return $next($request); // Authorized
             }
-        } else {
-            return $next($request);
+            return abort(403); // Unauthorized
+
         }
-        return abort(403); // Unauthorized
+
+        return $next($request);
     }
 }

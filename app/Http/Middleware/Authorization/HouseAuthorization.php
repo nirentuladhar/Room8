@@ -22,9 +22,9 @@ class HouseAuthorization
             if (in_array($house->toArray(), $user->houses->toArray())) {
                 return $next($request); // Authorized
             }
-        } else {
-            return $next($request);
+            return abort(403); // Unauthorized
+
         }
-        return abort(403); // Unauthorized
+        return $next($request);
     }
 }
