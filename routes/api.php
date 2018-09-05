@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 
 
-/**
+/**********************ERRORS********************************************************
  * Types of errors that can be returned from the API
  * syntax : ['error'=>'error_type']
  * 
@@ -20,8 +20,18 @@ use Illuminate\Http\Request;
  * URL_NOT_FOUND            ->  URL is invalid (It is not handled in api.php)
  * ACCESS_DENIED            ->  User is denied access to the resource 
  *                              (User not in the group/house etc)
- */
+ ************************************************************************************/
 
+
+/**********************CREATION********************************************************
+ * Types of errors that can be returned from the API
+ * syntax : ['status'=>'status_type']
+ * STATUS TYPE               |       MEANING
+ * _____________________________________________________________________________
+ * 
+ * CREATED                  ->  The resource is created
+ * FAILED                   ->  The resource creation is failed
+ ************************************************************************************/
 
 
 //---------------------------------------------------------------
@@ -48,6 +58,9 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
 //---------------------------------------------------------------
 // User Routes
 
+    /**
+     * Normal CRUD Routes
+     */
     Route::get('/users', 'UserController@index')->name('users.index');
     Route::post('/users', 'UserController@store')->name('users.store');
     Route::delete('/users/{user}', 'UserController@destroy')->name('users.destroy');
@@ -56,6 +69,10 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
         'as' => 'users.update'
     ));
     Route::get('/users/{user}', 'UserController@show')->name('users.show');
+
+    /**
+     * Relationship Routes
+     */
     Route::get('/users/{user}/houses', 'UserController@allHouses')->name('users.houses');
     Route::get('/users/{user}/groups', 'UserController@allGroups')->name('users.groups');
     Route::get('/users/{user}/transactions', 'UserController@allTransactions')->name('users.transactions');
@@ -100,6 +117,9 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
 //---------------------------------------------------------------
 // Group Routes
 
+    /**
+     * Normal CRUD Routes
+     */
     Route::get('/groups', 'GroupController@index')->name('groups.index');
     Route::delete('/groups/{group}', 'GroupController@destroy')->name('groups.destroy');
     Route::post('/groups/{house}', 'GroupController@store')->name('groups.store');
@@ -108,6 +128,10 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
         'as' => 'groups.update'
     ));
     Route::get('/groups/{group}', 'GroupController@show')->name('groups.show');
+
+    /**
+     * Relationship Routes
+     */
     Route::get('/groups/{group}/users', 'GroupController@allUsers')->name('groups.users');
     Route::get('/groups/{group}/house', 'GroupController@house')->name('groups.house');
     Route::get('/groups/{group}/transactions', 'GroupController@allTransactions')->name('groups.transactions');

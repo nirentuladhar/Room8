@@ -39,8 +39,9 @@ class GroupController extends Controller
     }
 
     /**
-     *  @GET
-     * @route : /groups/{group_id}
+     *  @POST
+     * @route : /groups/{house_id}
+     * @params : name, description, users[id,id,id], 
      * Store a newly created group in storage.
      *
      * @param  \Illuminate\Http\Request  $request
