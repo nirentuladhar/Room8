@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Group;
+use App\House;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
 {
@@ -17,7 +19,8 @@ class GroupController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['authorization.group'], ['except' => ['index', 'show']]);
+        $this->middleware(['authorization.group'], ['except' => ['index', 'show', 'store']]);
+        $this->middleware(['authorization.house'], ['only' => 'store']);
     }
 
 
@@ -36,14 +39,26 @@ class GroupController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  @GET
+     * @route : /groups/{group_id}
+     * Store a newly created group in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, House $house)
     {
-        //
+        $request->request->add(['house_id' => $house->id]);
+        $validate = Validator::make($request->all(), Group::$storeRules);
+        if (!$validate->fails()) {
+            $group = new Group($request->all());
+            if ($group->save()) {
+                return response()->json(["status" => "CREATED"], 201); // 201 - created
+            }
+            return response()->json(["status" => "FAILED"], 400);
+        } else {
+            return response()->json($validate->errors(), 422);// 422 - unprocessable request
+        }
     }
 
     /**

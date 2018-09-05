@@ -22,6 +22,8 @@ class TransactionAuthorization
             if (in_array($transaction->toArray(), $user->transactions->toArray())) {
                 return $next($request); // Authorized
             }
+        } else {
+            return $next($request);
         }
         return abort(403); // Unauthorized
     }

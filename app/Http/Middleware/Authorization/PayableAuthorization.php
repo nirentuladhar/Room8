@@ -22,6 +22,8 @@ class PayableAuthorization
             if ($payable->payer_id == $user->id || $payable->receiver_id == $user->id) {
                 return $next($request); // Authorized
             }
+        } else {
+            return $next($request);
         }
         return abort(403); // Unauthorized
     }

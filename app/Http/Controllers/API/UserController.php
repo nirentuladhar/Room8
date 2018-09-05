@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['authorization.user'], ['except' => ['index', 'show', 'toPay', 'toReceive']]);
+        $this->middleware(['authorization.user'], ['except' => ['index', 'show', 'toPay', 'toReceive', 'paid', 'received']]);
     }
 
     /**

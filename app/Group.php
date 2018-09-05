@@ -24,6 +24,16 @@ class Group extends Model
     ];
 
     /**
+     * Store Validation Rules
+     */
+
+    public static $storeRules = array(
+        'name' => 'required|max:255',
+        'house_id' => 'required|numeric',
+        'description' => 'required|max:1000'
+    );
+
+    /**
      * Relationships
      */
 

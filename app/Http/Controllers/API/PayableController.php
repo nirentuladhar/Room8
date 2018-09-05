@@ -17,7 +17,7 @@ class PayableController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['authorization.payable'], ['except' => ['index']]);
+        $this->middleware(['authorization.payable'], ['except' => ['show']]);
     }
 
     /**
