@@ -48,12 +48,24 @@ class GroupController extends Controller
      */
     public function store(Request $request, House $house)
     {
+        // dd($request->all());
         $request->request->add(['house_id' => $house->id]);
         $validate = Validator::make($request->all(), Group::$storeRules);
         if (!$validate->fails()) {
             $group = new Group($request->all());
             if ($group->save()) {
-                return response()->json(["status" => "CREATED"], 201); // 201 - created
+                $group->users()->attach(Auth::user()->id);
+                if (count($request->input('users')) > 0) {
+                    foreach ($request->input('users') as $user) {
+                        $group->users()->attach($user);
+                    }
+                }
+
+                $response["status"] = "CREATED";
+                $response["group"] = $group->makeHidden('users');
+                $response["links"]["self"] = $request->url();
+                $response["links"]["group"] = route('groups.show', $group->id);
+                return response()->json($response, 201); // 201 - created
             }
             return response()->json(["status" => "FAILED"], 400);
         } else {

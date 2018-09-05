@@ -101,8 +101,8 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
 // Group Routes
 
     Route::get('/groups', 'GroupController@index')->name('groups.index');
-    Route::post('/groups/{house}', 'GroupController@store')->name('groups.store');
     Route::delete('/groups/{group}', 'GroupController@destroy')->name('groups.destroy');
+    Route::post('/groups/{house}', 'GroupController@store')->name('groups.store');
     Route::match(array('PUT', 'PATCH'), "/groups/{group}", array(
         'uses' => 'GroupController@update',
         'as' => 'groups.update'

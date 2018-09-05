@@ -49,12 +49,12 @@ class Group extends Model
 
     public function transactions()
     {
-        return $this->hasMany('App\Transaction');
+        return $this->hasMany('App\Transaction')->withTimeStamps();
     }
 
     public function payables()
     {
-        $this->hasMany('App\Payable');
+        $this->hasMany('App\Payable')->withTimeStamps();
     }
 
 

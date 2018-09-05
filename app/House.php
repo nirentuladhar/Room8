@@ -30,16 +30,16 @@ class House extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')->withTimestamps();
     }
 
     public function groups()
     {
-        return $this->hasMany('App\Group');
+        return $this->hasMany('App\Group')->withTimeStamps();
     }
 
     public function transactions()
     {
-        return $this->hasMany('App\Transaction');
+        return $this->hasMany('App\Transaction')->withTimeStamps();
     }
 }
