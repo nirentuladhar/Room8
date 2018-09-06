@@ -14,7 +14,7 @@ class TransactionAuthorization
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $access)
     {
         $user = Auth::user();
         if ($request->route()->hasParameter('transaction')) {
@@ -22,6 +22,16 @@ class TransactionAuthorization
             if (in_array($transaction->toArray(), $user->transactions->toArray())) {
                 return $next($request); // Authorized
             }
+            if ($access == "group") {
+                $group = $user->groups()->where('groups.id', $transaction->group_id)->first();
+                if ($group) {
+                    if (in_array($transaction->toArray(), $group->transactions->toArray())) {
+                        return $next($request);
+                    }
+                }
+
+            }
+
             return abort(403); // Unauthorized
         }
 

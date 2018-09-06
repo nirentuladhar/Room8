@@ -144,7 +144,7 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
 // Transaction Routes
 
     // Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
-    Route::post('/transactions', 'TransactionController@store')->name('transactions.store');
+    Route::post('/transactions/{group}', 'TransactionController@store')->name('transactions.store');
     Route::delete('/transactions/{transaction}', 'TransactionController@destroy')->name('transactions.destroy');
     Route::match(array('PUT', 'PATCH'), "/transactions/{transaction}", array(
         'uses' => 'TransactionController@update',
