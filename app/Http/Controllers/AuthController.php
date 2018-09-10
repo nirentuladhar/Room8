@@ -53,7 +53,9 @@ class AuthController extends Controller
             }
             return response()->json(["status" => "FAILED"], 400);
         } else {
-            return response()->json($validate->errors(), 422);// 422 - unprocessable request
+            $errors["status"] = "FAILED";
+            $errors["errors"] = $validate->errors();
+            return response()->json($errors, 422);// 422 - unprocessable request
         }
     }
 

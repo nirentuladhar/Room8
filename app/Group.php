@@ -54,7 +54,7 @@ class Group extends Model
 
     public function payables()
     {
-        $this->hasMany('App\Payable');
+        return $this->hasMany('App\Payable');
     }
 
 

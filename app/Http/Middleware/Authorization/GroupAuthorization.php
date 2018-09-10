@@ -4,6 +4,7 @@ namespace App\Http\Middleware\Authorization;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Group;
 
 class GroupAuthorization
 {

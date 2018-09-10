@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
  * 
  * UNAUTHORIZED_REQUEST     ->  The request is unauthorized (No token used)
  * 
- * MODEL_NOT_FOUND          ->  Model not found for the id
+ * MODEL_NOT_FOUND          ->  Model not found for the id (need to change this to normal URL_NOT_FOUND before deploying for security reasons)
  * URL_NOT_FOUND            ->  URL is invalid (It is not handled in api.php)
  * ACCESS_DENIED            ->  User is denied access to the resource 
  *                              (User not in the group/house etc)
@@ -135,6 +135,10 @@ Route::group(['namespace' => 'API', 'middleware' => ['api', 'jwt.auth']], functi
     Route::get('/groups/{group}/users', 'GroupController@allUsers')->name('groups.users');
     Route::get('/groups/{group}/house', 'GroupController@house')->name('groups.house');
     Route::get('/groups/{group}/transactions', 'GroupController@allTransactions')->name('groups.transactions');
+    Route::get('/groups/{group}/calculate', 'GroupController@calculatePayables')->name('groups.calculate');
+    Route::get('/groups/{group}/payables', 'GroupController@allPayables')->name('groups.payables');
+    Route::get('/groups/{group}/toPay', 'GroupController@toPay')->name('groups.toPay');
+    Route::get('/groups/{group}/toRecieve', 'GroupController@toRecieve')->name('groups.toRecieve');
 
 //---------------------------------------------------------------
 

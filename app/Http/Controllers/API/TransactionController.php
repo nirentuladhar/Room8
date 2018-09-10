@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Transaction;
 use App\Group;
 use Illuminate\Validation\Validator;
-use App\Codes\Success;
 
 class TransactionController extends Controller
 {

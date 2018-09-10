@@ -72,6 +72,12 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'URL_NOT_FOUND'], 404);
         } else if ($exception instanceof HttpException) {
             return response()->json(['error' => 'ACCESS_DENIED'], 403);
+        } else if ($exception->getPrevious() instanceof TokenExpiredException) {
+            return response()->json(['error' => 'TOKEN_EXPIRED'], $exception->getStatusCode());
+        } else if ($exception->getPrevious() instanceof TokenInvalidException) {
+            return response()->json(['error' => 'TOKEN_INVALID'], $exception->getStatusCode());
+        } else if ($exception->getPrevious() instanceof TokenBlacklistedException) {
+            return response()->json(['error' => 'TOKEN_BLACKLISTED'], $exception->getStatusCode());
         }
         return parent::render($request, $exception);
     }
